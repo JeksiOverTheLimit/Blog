@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Services\PostService;
 use App\Services\WishlistService;
 use Illuminate\Http\Request;
+use App\Services\PostServiceInterface;
+use App\Services\WishlistServiceInterface;
 
 class WishlistController extends Controller
 {
-    private WishlistService $whishlistService;
-    private PostService $postService;
+    private $whishlistService;
+    private $postService;
 
-    public function __construct()
+    public function __construct(WishlistServiceInterface $whishlistService, PostServiceInterface $postService)
     {
-        $this->whishlistService = new WishlistService;
-        $this->postService = new PostService;
+        $this->whishlistService = $whishlistService;
+        $this->postService = $postService;
     }
     public function showWishlistPage()
     {
@@ -35,13 +37,13 @@ class WishlistController extends Controller
         ]);
         $postId = $request->post_id;
         $userId = $request->user_id;
-    
-        $existingWishlist = $this->whishlistService->checkForExistingWhishlist($postId,$userId);
-    
+
+        $existingWishlist = $this->whishlistService->checkForExistingWhishlist($postId, $userId);
+
         if ($existingWishlist) {
             return redirect()->route('wishlist', ['userId' => auth()->user()->id])->withErrors('This wishlist already exists.');
         }
-    
+
         $this->whishlistService->create($fields);
 
         return redirect()->route('wishlist', ['userId' => auth()->user()->id]);
@@ -52,17 +54,18 @@ class WishlistController extends Controller
         $postId = $request->post_id;
         $userId = $request->user_id;
 
-        $this->whishlistService->delete($postId,$userId);
+        $this->whishlistService->delete($postId, $userId);
 
         return redirect()->route('wishlist', ['userId' => auth()->user()->id]);
     }
 
-    public function getWishListCount() {
-    $userId = auth()->user()->id;
+    public function getWishListCount()
+    {
+        $userId = auth()->user()->id;
 
-    $wishlists = $this->whishlistService->getAllWhishListByUserId($userId);
+        $wishlists = $this->whishlistService->getAllWhishListByUserId($userId);
 
-    $count = count($wishlists);
-    return $count;
+        $count = count($wishlists);
+        return $count;
     }
 }

@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\UserService;
+use App\Services\UserServiceInterface;
 use Illuminate\Validation\Rule;
 use Illuminate\Auth\Authenticatable;
 
 class UserController extends Controller
 {
-    private UserService $userService;
+    private $userService;
 
-    public function __construct()
+    public function __construct(UserServiceInterface $userService)
     {
-        $this->userService = new UserService();
+        $this->userService = $userService;
     }
 
     public function showRegisterPage()

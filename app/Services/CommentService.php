@@ -1,8 +1,11 @@
 <?php
 namespace App\Services;
 use App\Models\Comment;
+use App\Services\CommentServiceInterface;
 
-class CommentService{
+
+class CommentService implements CommentServiceInterface
+{
 
     public function getAllCommentsByCommentId($commentIds) {
         $comments = Comment::whereIn('id', $commentIds)->get();

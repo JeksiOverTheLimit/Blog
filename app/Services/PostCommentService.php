@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Services;
-
 use App\Models\PostComment;
+use App\Services\PostCommentServiceInterface ;
 
-
-class PostCommentService
+class PostCommentService implements PostCommentServiceInterface
 {
 
     public function getAllPostCommentByCommentPostId($postId)

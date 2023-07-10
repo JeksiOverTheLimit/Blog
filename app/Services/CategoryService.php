@@ -1,9 +1,11 @@
 <?php
 namespace App\Services;
 use App\Models\Category;
+use App\Services\CategoryServiceInterface ;
 
 
-class CategoryService{
+class CategoryService implements CategoryServiceInterface 
+{
 
    public function getAllCategory(){
     return Category::All();

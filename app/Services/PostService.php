@@ -5,16 +5,18 @@ namespace App\Services;
 use App\Models\Post;
 use App\Services\CommentService;
 use App\Services\PostCommentService;
+use App\Services\PostServiceInterface ;
 
-class PostService
+
+class PostService implements PostServiceInterface
 {
     private CommentService $commentService;
     private PostCommentService $postCommentService;
 
-    public function __construct()
+    public function __construct(CommentService $commentService, PostCommentService $postCommentService)
     {
-        $this->commentService = new CommentService();
-        $this->postCommentService = new PostCommentService();
+        $this->commentService = $commentService;
+        $this->postCommentService = $postCommentService;
     }
     
     public function showSinglePage(int $postId): array

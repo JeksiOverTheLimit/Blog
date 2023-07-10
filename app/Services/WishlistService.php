@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Models\Wishlist;
+use App\Services\WishlistServiceInterface;
 
-
-class WishlistService
+class WishlistService implements WishlistServiceInterface
 {
 
     public function getAllWhishListByUserId(int $userId)

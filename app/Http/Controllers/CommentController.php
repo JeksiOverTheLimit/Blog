@@ -6,16 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\PostComment;
 use App\Services\CommentService;
 use App\Services\PostCommentService;
+use App\Services\CommentServiceInterface;
+use App\Services\PostCommentServiceInterface;
 
 class CommentController extends Controller
 {
-    private PostCommentService $postCommentService;
-    private CommentService $commentService;
+    private $postCommentService;
+    private $commentService;
 
-    public function __construct()
+    public function __construct(PostCommentServiceInterface $postCommentService, CommentServiceInterface $commentService)
     {
-        $this->postCommentService = new PostCommentService();
-        $this->commentService = new CommentService();
+        $this->postCommentService = $postCommentService;
+        $this->commentService = $commentService;
     }
     public function create(Request $request)
     {

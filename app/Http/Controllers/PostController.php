@@ -8,26 +8,35 @@ use App\Services\PostCategoryService;
 use App\Services\PostCommentService;
 use App\Services\PostService;
 use App\Services\UserService;
+use App\Services\CategoryServiceInterface;
 use Illuminate\Http\Request;
-
+use App\Services\PostCategoryServiceInterface;
+use App\Services\PostCommentServiceInterface;
+use App\Services\PostServiceInterface;
+use App\Services\UserServiceInterface;
 
 class PostController extends Controller
 {
 
-  private PostService $postService;
-  private CategoryService $categoryService;
-  private PostCategoryService $postCategoryService;
-  private PostCommentService $postCommentService;
-  private UserService $userService;
+    private $postService;
+    private $categoryService;
+    private $postCategoryService;
+    private $postCommentService;
+    private $userService;
 
-  public function __construct()
-  {
-      $this->postService = new PostService();
-      $this->categoryService = new CategoryService();
-      $this->postCategoryService = new PostCategoryService();
-      $this->userService = new UserService();
-      $this->postCommentService = new PostCommentService();
-  }
+    public function __construct(
+        PostServiceInterface $postService,
+        CategoryServiceInterface $categoryService,
+        PostCategoryServiceInterface $postCategoryService,
+        PostCommentServiceInterface $postCommentService,
+        UserServiceInterface $userService
+    ) {
+        $this->postService = $postService;
+        $this->categoryService = $categoryService;
+        $this->postCategoryService = $postCategoryService;
+        $this->postCommentService = $postCommentService;
+        $this->userService = $userService;
+    }
 
   public function showPost()
   {
@@ -49,14 +58,13 @@ class PostController extends Controller
       'postCategories' => $postCategories,
       'categories' => $categories
     ]);
-
   }
 
   public function showSinglePage($postId)
   {
-      $result = $this->postService->showSinglePage($postId);
-  
-      return view('singlePage', $result);
+    $result = $this->postService->showSinglePage($postId);
+
+    return view('singlePage', $result);
   }
 
 
@@ -107,7 +115,7 @@ class PostController extends Controller
     $post = $this->postService->findByPostId($postId);
     $categories = $this->categoryService->getAllCategory();
     $postCategoryIds = $this->postCategoryService->getAllPostCategoryIdByPostId($postId);
-    
+
     return view('edit', ['post' => $post, 'categories' => $categories, 'postCategoryIds' => $postCategoryIds]);
   }
 

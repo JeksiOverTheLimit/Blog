@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\PostCategory;
+use App\Services\PostCategoryServiceInterface;
+;
 
-
-class PostCategoryService
+class PostCategoryService implements PostCategoryServiceInterface
 {
 
     public function saveToBase(PostCategory $postCategory): void
